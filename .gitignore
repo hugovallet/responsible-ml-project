@@ -1,0 +1,20 @@
+# jupyter
+notebooks/
+
+# doc builds
+docs/
+
+# PyCharm
+.idea/
+
+# cache files
+__pycache__/
+.cache/
+
+# packaging
+build/
+dist/
+mpl_themes_utils.egg-info/
+
+# doc build
+sphinx/build/
