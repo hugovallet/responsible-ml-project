@@ -9,7 +9,7 @@ RUN apt-get update && \
     rm -rf /var/lib/apt/lists/*
 
 # Pip install required packages for Mlflow
-RUN pip mlflow
+RUN pip install mlflow
 
 COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
