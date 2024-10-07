@@ -52,7 +52,7 @@ class CLITimestamp(ParamType):
     def convert(self, value, param, ctx):
         try:
             return pd.to_datetime(value, format=DATE_FORMAT)
-        except (ValueError, UnicodeError):
+        except ValueError:
             self.fail(f"{value} is not a valid '{DATE_FORMAT}' date", param, ctx)
 
     def __repr__(self):
