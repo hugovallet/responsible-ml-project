@@ -1,17 +1,28 @@
 version: '3.7'
 
 services:
-    web:
+    mlflow:
         image: mlflow_server
         env_file: "all.env"
         restart: always
         build: ./mlflow
         container_name: mlflow_server
         ports:
-            - "5000:5000"
+            - "127.0.0.1:5000:5000"
         volumes:
             -   mlflow-data:/mlflow
+    evidently:
+        image: evidently_server
+        env_file: "all.env"
+        restart: always
+        build: ./evidently
+        container_name: evidently_server
+        ports:
+            - "127.0.0.1:8000:8000"
+        volumes:
+            - evidently-data:/evidently
 
 volumes:
     mlflow-data:
     postgres-db-volume:
+    evidently-data:
