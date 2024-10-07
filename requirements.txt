@@ -1,3 +1,6 @@
 codecarbon
 mlflow
 evidently
+fairlearn
+jupyter
+pre-commit

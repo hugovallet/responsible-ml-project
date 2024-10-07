@@ -10,8 +10,7 @@ log = logging.getLogger(__name__)
 
 @click.group(cls=SpecialHelpOrder)
 def cli():
-    """Training pipeline tasks
-    """
+    """Training pipeline tasks"""
 
 
 @cli.command(
