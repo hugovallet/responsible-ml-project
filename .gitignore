@@ -21,6 +21,13 @@ sphinx/build/
 
 # mlflow runs
 mlruns/
+/mlflow/
 
 # evidenly runs
-evidently/
+/evidently/
+
+# code carbon files
+emmisions.csv
+
+/emissions.csv
+/powermetrics_log.txt
