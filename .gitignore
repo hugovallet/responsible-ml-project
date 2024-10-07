@@ -21,3 +21,6 @@ sphinx/build/
 
 # mlflow runs
 mlruns/
+
+# evidenly runs
+evidently/
