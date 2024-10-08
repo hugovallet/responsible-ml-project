@@ -2,6 +2,7 @@ import logging
 
 import click
 
+from src.inference.tasks import load_inference_data, load_model, run_inference, score_inference
 from src.utils.click import SpecialHelpOrder
 
 
@@ -18,4 +19,7 @@ def cli():
     help_priority=1,
 )
 def run():
-    pass
+    X = load_inference_data()
+    model = load_model()
+    y_pred = run_inference(model, X)
+    score_inference(y_pred)
