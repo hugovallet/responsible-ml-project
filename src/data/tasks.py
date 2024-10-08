@@ -36,8 +36,8 @@ def build_label_feature_stores():
 
     for month in range(1, 8):
         # for the first 3 months, data stays roughly the same (first month with little Gaussian noise)
-        month_features = __add_gaussian_noise(features.copy(), 0.1)
-        month_label = __add_gaussian_noise(label.copy(), 0.1)
+        month_features = __add_gaussian_noise(features.copy(), 0.0)
+        month_label = __add_gaussian_noise(label.copy(), 0.0)
         month_features["month"] = first_date + pd.DateOffset(months=month)
         month_label["month"] = first_date + pd.DateOffset(months=month)
         # for the next 3 months, the drifting features see their mean increase by 3 times std, huge drift! (while label
