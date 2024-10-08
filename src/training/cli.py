@@ -1,7 +1,10 @@
 import logging
+import os
 
 import click
+import mlflow
 
+from src.training.tasks import load_training_data, train_model, score_model
 from src.utils.click import SpecialHelpOrder
 
 
@@ -14,17 +17,13 @@ def cli():
 
 
 @cli.command(
-    help="A dummy task",
+    help="Runs the training pipeline",
     help_priority=1,
 )
-@click.option(
-    "--synthetic/--no-synthetic",
-    "-s/-ns",
-    "use_synthetic",
-    is_flag=True,
-    default=True,
-    show_default=True,
-    help="Whether to use " "synthetic data to " "run the step",
-)
-def run(use_synthetic):
-    print(f"hello world: {use_synthetic}")
+def run():
+    mlflow.end_run()
+    with mlflow.start_run():
+        X_train, X_test, y_train, y_test = load_training_data()
+        model = train_model(X_train, y_train)
+        score_model(model, X_train, y_train, X_test, y_test)
+

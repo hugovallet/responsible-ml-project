@@ -11,6 +11,7 @@ services:
             - "127.0.0.1:5000:5000"
         volumes:
             -   mlflow-data:/mlflow
+            -   mlflow-artifacts:/mlflow-artifacts
     evidently:
         image: evidently_server
         env_file: "all.env"
@@ -24,5 +25,6 @@ services:
 
 volumes:
     mlflow-data:
+    mlflow-artifacts:
     postgres-db-volume:
     evidently-data:

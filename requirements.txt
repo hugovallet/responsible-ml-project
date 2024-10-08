@@ -4,3 +4,4 @@ evidently
 fairlearn
 jupyter
 pre-commit
+python-dotenv
