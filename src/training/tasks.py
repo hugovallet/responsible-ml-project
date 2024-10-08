@@ -16,6 +16,7 @@ from sklearn.model_selection import train_test_split
 
 from src import ROOT_DIR
 from src.utils.io import read_yaml
+from src.utils.mlflow import log_df_as_csv
 
 logger = logging.getLogger(__name__)
 
@@ -146,3 +147,5 @@ def score_model(model, X_train, y_train, X_test, y_test, feature_catalogue):
     test_dataset = mlflow.data.from_pandas(pd.concat([X_test, y_test], axis=1))
     mlflow.log_input(dataset=train_dataset, context="training")
     mlflow.log_input(dataset=test_dataset, context="testing")
+    log_df_as_csv(X_train, name="X_train")
+    log_df_as_csv(y_train, name="y_train")
