@@ -22,6 +22,13 @@ def cli():
 def run():
     mlflow.end_run()
     with mlflow.start_run():
-        X_train, X_test, y_train, y_test = load_training_data()
+        (
+            X_train,
+            X_test,
+            y_train,
+            y_test,
+            feature_catalogue,
+            label_catalogue,
+        ) = load_training_data()
         model = train_model(X_train, y_train)
-        score_model(model, X_train, y_train, X_test, y_test)
+        score_model(model, X_train, y_train, X_test, y_test, feature_catalogue)

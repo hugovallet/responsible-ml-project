@@ -5,55 +5,69 @@ schema:
     desc: "Data snapshot date, be careful to select your pivots correctly to avoid data leakage when training
     your models!"
     is_risky: False
+    is_demo: False
   CRIM:
     type: float
     desc: "Per capita crime rate by town"
     is_risky: False
+    is_demo: False
   ZN:
     type: float
     desc: "Proportion of residential land zoned for lots over 25,000 sq.ft."
     is_risky: False
+    is_demo: False
   INDUS:
     type: float
     desc: "Proportion of non-retail business acres per town"
     is_risky: False
+    is_demo: False
   CHAS:
     type: bool
     desc: "Charles River dummy variable (= 1 if tract bounds river; 0 otherwise)"
     is_risky: False
+    is_demo: False
   NOX:
     type: float
     desc: "nitric oxides concentration (parts per 10 million)"
     is_risky: False
+    is_demo: False
   RM:
     type: int
     desc: "average number of rooms per dwelling"
     is_risky: False
+    is_demo: False
   AGE:
     type: float
     desc: "proportion of owner-occupied units built prior to 1940"
     is_risky: False
+    is_demo: False
   DIS:
     type: float
     desc: "weighted distances to five Boston employment centers"
     is_risky: False
+    is_demo: False
   RAD:
     type: float
     desc: "index of accessibility to radial highways"
     is_risky: False
+    is_demo: False
   TAX:
     type: float
     desc: "full-value property-tax rate per $10,000"
     is_risky: False
+    is_demo: False
   PTRATIO:
     type: float
     desc: "pupil-teacher ratio by town"
     is_risky: False
+    is_demo: False
   B:
     type: float
     desc: "1000(Bk - 0.63)^2 where Bk is the proportion of Black people by town"
     is_risky: True
+    is_demo: True
   LSTAT:
     type: float
     desc: "% lower status of the population"
     is_risky: True
+    is_demo: True

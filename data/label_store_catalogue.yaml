@@ -5,7 +5,9 @@ schema:
     desc: "Data snapshot date, be careful to select your pivots correctly to avoid data leakage when training
     your models!"
     is_risky: False
+    is_demo: False
   MEDV:
     type: float
     desc: "Median value of owner-occupied homes in $1000’s"
     is_risky: False
+    is_demo: False
