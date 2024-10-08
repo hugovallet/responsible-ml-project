@@ -16,7 +16,9 @@ logger = logging.getLogger(__name__)
 def _infer_prediction_month():
     """Automatically increments the prediction month depending on previous runs. Allows us to simulate a realistic
     production environment where inference has to run monthly."""
-    predictions = pd.read_csv(ROOT_DIR / "data" / "prediction_store.csv", parse_dates=["month"])
+    predictions = pd.read_csv(
+        ROOT_DIR / "data" / "prediction_store.csv", parse_dates=["month"]
+    )
     if predictions.empty:
         return pd.Timestamp("2024-02-01")
     else:

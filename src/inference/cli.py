@@ -3,10 +3,20 @@ import logging
 import click
 from evidently import metrics
 from evidently.renderers.html_widgets import WidgetSize
-from evidently.ui.dashboards import DashboardPanelPlot, ReportFilter, PanelValue, PlotType
+from evidently.ui.dashboards import (
+    DashboardPanelPlot,
+    ReportFilter,
+    PanelValue,
+    PlotType,
+)
 from evidently.ui.workspace import Workspace
 
-from src.inference.tasks import load_inference_data, load_model, run_inference, score_inference
+from src.inference.tasks import (
+    load_inference_data,
+    load_model,
+    run_inference,
+    score_inference,
+)
 from src.utils.click import SpecialHelpOrder
 
 
@@ -50,7 +60,7 @@ def init_evidently_dashboard():
             plot_type=PlotType.LINE,
             size=WidgetSize.FULL,
         ),
-        tab="Summary"
+        tab="Summary",
     )
     project.dashboard.add_panel(
         DashboardPanelPlot(
@@ -66,6 +76,6 @@ def init_evidently_dashboard():
             plot_type=PlotType.LINE,
             size=WidgetSize.FULL,
         ),
-        tab="Summary"
+        tab="Summary",
     )
     project.save()
