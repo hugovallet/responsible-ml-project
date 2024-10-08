@@ -2,7 +2,7 @@
 schema:
   month:
     type: date
-    desc: "Data snapshot date, be careful to select your pivots correctly to avoid data leakage when training 
+    desc: "Data snapshot date, be careful to select your pivots correctly to avoid data leakage when training
     your models!"
     is_risky: False
   MEDV:

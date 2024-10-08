@@ -1,5 +1,4 @@
 import logging
-import os
 
 import click
 import mlflow
@@ -26,4 +25,3 @@ def run():
         X_train, X_test, y_train, y_test = load_training_data()
         model = train_model(X_train, y_train)
         score_model(model, X_train, y_train, X_test, y_test)
-

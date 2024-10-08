@@ -1,14 +1,15 @@
 import logging
-import pickle
 from typing import Tuple
 
 import mlflow
 import pandas as pd
-import yaml
 from fairlearn.metrics import demographic_parity_difference
-from sklearn.ensemble import RandomForestClassifier, RandomForestRegressor
 from sklearn.linear_model import LinearRegression
-from sklearn.metrics import r2_score, root_mean_squared_error, mean_absolute_percentage_error, mean_absolute_error
+from sklearn.metrics import (
+    r2_score,
+    mean_absolute_percentage_error,
+    mean_absolute_error,
+)
 from sklearn.model_selection import train_test_split
 
 from src import ROOT_DIR
@@ -17,25 +18,36 @@ from src.utils.io import read_yaml
 logger = logging.getLogger(__name__)
 
 
-def load_training_data() -> Tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame, pd.DataFrame]:
-    """Train model on first """
+def load_training_data() -> (
+    Tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame, pd.DataFrame]
+):
+    """Train model on first"""
     logger.info("[+] Loading training data")
     X = pd.read_csv(ROOT_DIR / "data" / "feature_store.csv", parse_dates=["month"])
     X = X[X["month"] == pd.Timestamp("2024-01-01")].drop(columns=["month"])
     y = pd.read_csv(ROOT_DIR / "data" / "label_store.csv", parse_dates=["month"])
     y = y.loc[y["month"] == pd.Timestamp("2024-01-01"), "MEDV"]
 
-    label_store_catalogue = read_yaml(ROOT_DIR / "data" / "label_store_catalogue.yaml")['schema']
+    label_store_catalogue = read_yaml(ROOT_DIR / "data" / "label_store_catalogue.yaml")[
+        "schema"
+    ]
     label_store_catalogue = {y.name: label_store_catalogue[y.name]}
-    feature_store_catalogue = read_yaml(ROOT_DIR / "data" / "feature_store_catalogue.yaml")['schema']
+    feature_store_catalogue = read_yaml(
+        ROOT_DIR / "data" / "feature_store_catalogue.yaml"
+    )["schema"]
     feature_store_catalogue = {k: feature_store_catalogue[k] for k in X.columns}
 
-    X_train, X_test, y_train, y_test = train_test_split(X, y, random_state=42, test_size=0.33)
+    X_train, X_test, y_train, y_test = train_test_split(
+        X, y, random_state=42, test_size=0.33
+    )
 
     mlflow.log_param("Dataset size-Train", len(y_train))
     mlflow.log_param("Dataset size-Test", len(y_test))
     mlflow.log_param("Number of features", X.shape[1])
-    mlflow.log_param("Number of risky features", len([k for k in X.columns if feature_store_catalogue[k]["is_risky"]]))
+    mlflow.log_param(
+        "Number of risky features",
+        len([k for k in X.columns if feature_store_catalogue[k]["is_risky"]]),
+    )
     mlflow.log_dict(feature_store_catalogue, "input_data.yml")
     mlflow.log_dict(label_store_catalogue, "output_data.yml")
 
