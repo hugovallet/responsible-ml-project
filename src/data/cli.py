@@ -2,7 +2,7 @@ import logging
 
 import click
 
-from src.data.tasks import build_stores
+import src.data.tasks as tasks
 from src.utils.click import SpecialHelpOrder
 
 
@@ -18,5 +18,13 @@ def cli():
     help="Build label and feature stores",
     help_priority=1,
 )
-def build_label_feature_store():
-    build_stores()
+def build_label_feature_stores():
+    tasks.build_label_feature_stores()
+
+
+@cli.command(
+    help="Empty the prediction store",
+    help_priority=2,
+)
+def reset_prediction_store():
+    tasks.reset_prediction_store()

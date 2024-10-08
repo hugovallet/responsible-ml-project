@@ -16,7 +16,7 @@ def __add_gaussian_noise(data, percent: float):
     return data + noise
 
 
-def build_stores():
+def build_label_feature_stores():
     """
     For this Proof-of-concept, we use the boston a data source notoriously famous for containing some serious ethical
     issues. We modify that dataset to also include a temporal drift in some variables, imagining that the same dataset
@@ -51,3 +51,11 @@ def build_stores():
 
     feature_store.to_csv(ROOT_DIR / "data" / "feature_store.csv", index=False)
     label_store.to_csv(ROOT_DIR / "data" / "label_store.csv", index=False)
+
+
+def reset_prediction_store():
+    """In this proof pf concept, as we are not using real data, when running multiple times the inference pipeline
+    you will run out of data. This command allows to restart the process from first month as if you never made any
+    inferences."""
+    empty_store_df = pd.DataFrame(columns=["month", "model_id", "prediction"])
+    empty_store_df.to_csv(ROOT_DIR / "data" / "prediction_store.csv", index=False)
