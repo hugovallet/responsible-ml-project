@@ -1,17 +1,8 @@
 import logging
 
 import click
-from evidently import metrics
-from evidently.renderers.html_widgets import WidgetSize
-from evidently.ui.dashboards import (
-    DashboardPanelPlot,
-    ReportFilter,
-    PanelValue,
-    PlotType,
-)
-from evidently.ui.workspace import Workspace
+from mlflow.types import Schema
 
-from src.inference.constants import EVIDENTLY_PROJECT_ID, EVIDENTLY_WS
 from src.inference.tasks import (
     load_inference_data,
     load_model,
@@ -33,52 +24,23 @@ def cli():
     help="Run the inference pipeline",
     help_priority=1,
 )
-def run():
-    X, ref_month = load_inference_data()
-    model, model_infos = load_model()
+@click.option("-m", "--model_name", "model_name")
+def run(model_name):
+    # retrieve latest model version from MLFlow
+    model, model_infos = load_model(model_name)
+    # load inference data
+    X, ref_month = load_inference_data(
+        cols=Schema.input_names(model.metadata.signature.inputs)
+    )
+    # run model on data
     y_pred = run_inference(
         model=model, model_infos=model_infos, X=X, ref_month=ref_month
     )
-    score_inference(X=X, y_pred=y_pred, model_infos=model_infos, ref_month=ref_month)
-
-
-@cli.command(
-    help="Start dashboard",
-    help_priority=2,
-)
-def init_dashboard():
-    ws = Workspace(EVIDENTLY_WS)
-    project = ws.get_project(EVIDENTLY_PROJECT_ID)
-    project.dashboard.add_panel(
-        DashboardPanelPlot(
-            title="Monthly inference Count",
-            filter=ReportFilter(metadata_values={}, tag_values=[]),
-            values=[
-                PanelValue(
-                    metric_id="DatasetSummaryMetric",
-                    field_path=metrics.DatasetSummaryMetric.fields.current.number_of_rows,
-                    legend="count",
-                ),
-            ],
-            plot_type=PlotType.LINE,
-            size=WidgetSize.FULL,
-        ),
-        tab="Summary",
+    # check and log drift
+    score_inference(
+        X=X,
+        y_pred=y_pred,
+        model_name=model_name,
+        model_infos=model_infos,
+        ref_month=ref_month,
     )
-    project.dashboard.add_panel(
-        DashboardPanelPlot(
-            title="Share of drifting features",
-            filter=ReportFilter(metadata_values={}, tag_values=[]),
-            values=[
-                PanelValue(
-                    metric_id="DatasetDriftMetric",
-                    field_path="share_of_drifted_columns",
-                    legend="share",
-                ),
-            ],
-            plot_type=PlotType.LINE,
-            size=WidgetSize.FULL,
-        ),
-        tab="Summary",
-    )
-    project.save()

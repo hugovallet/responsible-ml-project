@@ -32,8 +32,8 @@ problematic data. This will allow automatic detection of problematic
 data usage.
 
 For the sake of simplicity, in this simulation data stores are simple
-flat files. In a more "industrial" setup, these stores would 
-typically be regular queryable databases on your (cloud) infrastructure. 
+flat files. In a more "industrial" setup, these stores would
+typically be regular queryable databases on your (cloud) infrastructure.
 
 ### Tools used
 
@@ -42,15 +42,15 @@ they are reviewed, documented and that there exist a segmentation between
 production-grade and development-grade models.
 2. Evidently: we use Evidently to measure input data drift when performing
 inference using production-level models stored on MLFlow
-3. Code Carbon: we use Code Carbon to track the electric consumption of our 
+3. Code Carbon: we use Code Carbon to track the electric consumption of our
 training and inference tasks, on the user's machine. NOTE: as of October
-2024, Code Carbon UI seems down... Therefore, we won't show carbon tracking 
+2024, Code Carbon UI seems down... Therefore, we won't show carbon tracking
 metrics on CC's dashboard
 
-For the sake of simplicity, in this simulation the tools will be 
+For the sake of simplicity, in this simulation the tools will be
 deployed locally, on the user's computer. In a more "industrial" setup,
-these tools would be typically deployed on your organisation's 
-intranet and (programmatically !) accessible by all your Data Science / Data 
+these tools would be typically deployed on your organisation's
+intranet and (programmatically !) accessible by all your Data Science / Data
 Engineering teams.
 
 ## Getting started
