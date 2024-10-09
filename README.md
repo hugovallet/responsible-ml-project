@@ -31,6 +31,10 @@ up-to-date data catalogues (in `data/`) including risk flags for
 problematic data. This will allow automatic detection of problematic
 data usage.
 
+For the sake of simplicity, in this simulation data stores are simple
+flat files. In a more "industrial" setup, these stores would 
+typically be regular queryable databases on your (cloud) infrastructure. 
+
 ### Tools used
 
 1. MLFlow: we use MLFlow to store our trained regression models, ensure
@@ -38,6 +42,12 @@ they are reviewed, documented and that there exist a segmentation between
 production-grade and development-grade models.
 2. Evidently: we use Evidently to measure input data drift when performing
 inference using production-level models stored on MLFlow
+
+For the sake of simplicity, in this simulation the tools will be 
+deployed locally, on the user's computer. In a more "industrial" setup,
+these tools would be typically deployed on your organisation's 
+intranet and (programmatically !) accessible by all your Data Science / Data 
+Engineering teams.
 
 ## Getting started
 
