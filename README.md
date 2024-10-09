@@ -42,6 +42,10 @@ they are reviewed, documented and that there exist a segmentation between
 production-grade and development-grade models.
 2. Evidently: we use Evidently to measure input data drift when performing
 inference using production-level models stored on MLFlow
+3. Code Carbon: we use Code Carbon to track the electric consumption of our 
+training and inference tasks, on the user's machine. NOTE: as of October
+2024, Code Carbon UI seems down... Therefore, we won't show carbon tracking 
+metrics on CC's dashboard
 
 For the sake of simplicity, in this simulation the tools will be 
 deployed locally, on the user's computer. In a more "industrial" setup,
