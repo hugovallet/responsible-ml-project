@@ -14,16 +14,16 @@ architecture:
 ### Use-case
 
 A data science team is tasked with creating a regression model on some input
-data stored in the feature stored showed in the diagram above. Their goal
+data stored in the feature store showed in the diagram above. Their goal
 is to make a model that is performant and for which all the possible
 RAI risks are well measured, tracked over time and documented.
 
 ### Data used
 
-In this fake project, we use as feature store the notorious Boston Dataset.
+In this fake project, we use as feature store the infamous Boston Dataset.
 This dataset contains 2 potentially discriminatory columns: "B" and "LSTAT".
 We have created multiple snapshot of that dataset, at different point in time.
-At some point in the timeline, we simulate a data drift for a a few random
+At some point in the timeline, we simulate a data drift for a few randomly
 selected features.
 
 We assume that the data engineering and governance team has maintained
