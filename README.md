@@ -2,7 +2,7 @@
 
 This repo implements a toy ML project running on simulated data
 with a full suite of MLOps tools to demonstrate how to build
-automatic documentation and proof to support responsible AI systems.
+automatic documentation and proofing to support responsible AI systems.
 
 The system implemented is summarised by the following
 architecture:
