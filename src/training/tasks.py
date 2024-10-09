@@ -149,3 +149,6 @@ def score_model(model, X_train, y_train, X_test, y_test, feature_catalogue):
     mlflow.log_input(dataset=test_dataset, context="testing")
     log_df_as_csv(X_train, name="X_train")
     log_df_as_csv(y_train, name="y_train")
+    log_df_as_csv(X_test, name="X_test")
+    log_df_as_csv(y_test, name="y_test")
+    log_df_as_csv(pd.DataFrame(y_pred_test, columns=["target"]), name="y_pred_test")

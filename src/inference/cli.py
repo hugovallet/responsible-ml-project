@@ -11,6 +11,7 @@ from evidently.ui.dashboards import (
 )
 from evidently.ui.workspace import Workspace
 
+from src.inference.constants import EVIDENTLY_PROJECT_ID, EVIDENTLY_WS
 from src.inference.tasks import (
     load_inference_data,
     load_model,
@@ -34,18 +35,20 @@ def cli():
 )
 def run():
     X, ref_month = load_inference_data()
-    model, X_train, y_train = load_model()
-    y_pred = run_inference(model, X)
-    score_inference(X, y_pred, X_train, y_train, ref_month)
+    model, model_infos = load_model()
+    y_pred = run_inference(
+        model=model, model_infos=model_infos, X=X, ref_month=ref_month
+    )
+    score_inference(X=X, y_pred=y_pred, model_infos=model_infos, ref_month=ref_month)
 
 
 @cli.command(
     help="Start dashboard",
     help_priority=2,
 )
-def init_evidently_dashboard():
-    ws = Workspace("evidently/")
-    project = ws.get_project("01926d6a-e2c9-7941-a7e1-2a6243f9a0b3")
+def init_dashboard():
+    ws = Workspace(EVIDENTLY_WS)
+    project = ws.get_project(EVIDENTLY_PROJECT_ID)
     project.dashboard.add_panel(
         DashboardPanelPlot(
             title="Monthly inference Count",
