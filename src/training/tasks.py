@@ -4,6 +4,7 @@ from typing import Tuple, List, Dict
 import mlflow
 import numpy as np
 import pandas as pd
+from codecarbon import OfflineEmissionsTracker
 from fairlearn.metrics import demographic_parity_difference
 from matplotlib import pyplot as plt
 from sklearn.linear_model import LinearRegression
@@ -19,6 +20,13 @@ from src.utils.io import read_yaml
 from src.utils.mlflow import log_df_as_csv
 
 logger = logging.getLogger(__name__)
+
+
+training_tracker = OfflineEmissionsTracker(
+    country_iso_code="FRA",
+    measure_power_secs=0.5,
+    project_name="boston-dataset",
+)
 
 
 def get_risky_features_list(
@@ -41,6 +49,7 @@ def load_training_data() -> (
     Tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame, pd.DataFrame, Dict, Dict]
 ):
     """Train model on first"""
+    training_tracker.start()
     logger.info("[+] Loading training data")
     X = pd.read_csv(ROOT_DIR / "data" / "feature_store.csv", parse_dates=["month"])
     X = X[X["month"] == pd.Timestamp("2024-01-01")].drop(columns=["month"])
@@ -130,6 +139,7 @@ def score_model(model, X_train, y_train, X_test, y_test, feature_catalogue):
         mlflow.log_metric(f"DPD-variable-{v}", dpd)
 
     # Saving all metrics to mlflow along with model ---------------------
+    emissions = training_tracker.stop()
     mlflow.sklearn.log_model(model, "model", input_example=input_example)
     mlflow.log_metric("R2-train", r2_train)
     mlflow.log_metric("R2-test", r2_test)
@@ -137,8 +147,12 @@ def score_model(model, X_train, y_train, X_test, y_test, feature_catalogue):
     mlflow.log_metric("MAE-test", err_test)
     mlflow.log_metric("MAPE-train", err_perc_train)
     mlflow.log_metric("MAPE-test", err_perc_test)
+    mlflow.log_metric("Total CO2 Emissions-g", 1000 * emissions)
+    mlflow.log_metric("Total CPU Energy-kWh", training_tracker._total_cpu_energy.kWh)
+    mlflow.log_metric("Total GPU Energy-kWh", training_tracker._total_gpu_energy.kWh)
+    mlflow.log_metric("Total RAM Energy-kWh", training_tracker._total_ram_energy.kWh)
 
-    # Saving all graphs to mlflow along with model ----------------------
+    # Saving all graphs to mlflow along with model ------
     mlflow.log_figure(f1, "residuals_distribution.png")
     mlflow.log_figure(f2, "prediction_scatter.png")
 
