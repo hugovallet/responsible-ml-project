@@ -24,7 +24,7 @@ def cli():
     help="Run the inference pipeline",
     help_priority=1,
 )
-@click.option("-m", "--model_name", "model_name")
+@click.option("-m", "--model_name", "model_name", required=True)
 def run(model_name):
     # retrieve latest model version from MLFlow
     model, model_infos = load_model(model_name)

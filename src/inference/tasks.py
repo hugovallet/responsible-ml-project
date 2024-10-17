@@ -1,4 +1,5 @@
 import logging
+import os
 from time import sleep
 from typing import Tuple, List
 
@@ -14,6 +15,7 @@ from evidently.ui.dashboards import (
     PanelValue,
     PlotType,
 )
+from evidently.ui.errors import ProjectNotFound
 from evidently.ui.workspace import Workspace
 
 from src import ROOT_DIR
@@ -43,9 +45,12 @@ def _get_evidently_tracker(model_name) -> Project:
     all_projects_in_ws = {p.name: p for p in ws.list_projects()}
     if model_name not in all_projects_in_ws:
         # if this is a new model let's auto create an associated Evidently tracker
+        ml_flow_tracking_uri = os.getenv("MLFLOW_TRACKING_URI")
+        model_full_uri = f"{ml_flow_tracking_uri}#/models/{model_name}"
         project = ws.create_project(
             name=model_name,
-            description=f"Dashboard for project associated with model '{model_name}'",
+            description=f"Dashboard for project associated with model '{model_name}' \n"
+                        f"See: {model_full_uri}",
         )
         project.dashboard.add_panel(
             DashboardPanelPlot(
@@ -123,4 +128,10 @@ def score_inference(X, y_pred, model_name, model_infos, ref_month):
         timestamp=ref_month,
     )
     drift_report.run(reference_data=reference_data, current_data=current_data)
-    ws.add_report(project.id, drift_report)
+    try:
+        ws.add_report(project.id, drift_report)
+    except ProjectNotFound:
+        # catch weird Evidently error when dashboard to be created
+        pass
+    except Exception as e:
+        raise e

@@ -139,7 +139,7 @@ def score_model(model, X_train, y_train, X_test, y_test, feature_catalogue):
         mlflow.log_metric(f"DPD-variable-{v}", dpd)
 
     # Saving all metrics to mlflow along with model ---------------------
-    emissions = training_tracker.stop()
+    training_tracker.stop()
     mlflow.sklearn.log_model(model, "model", input_example=input_example)
     mlflow.log_metric("R2-train", r2_train)
     mlflow.log_metric("R2-test", r2_test)
@@ -147,10 +147,10 @@ def score_model(model, X_train, y_train, X_test, y_test, feature_catalogue):
     mlflow.log_metric("MAE-test", err_test)
     mlflow.log_metric("MAPE-train", err_perc_train)
     mlflow.log_metric("MAPE-test", err_perc_test)
-    mlflow.log_metric("Total CO2 Emissions-g", 1000 * emissions)
-    mlflow.log_metric("Total CPU Energy-kWh", training_tracker._total_cpu_energy.kWh)
-    mlflow.log_metric("Total GPU Energy-kWh", training_tracker._total_gpu_energy.kWh)
-    mlflow.log_metric("Total RAM Energy-kWh", training_tracker._total_ram_energy.kWh)
+    mlflow.log_metric("Total CO2 Emissions-g", 1000 * training_tracker.final_emissions_data.emissions)
+    mlflow.log_metric("Total CPU Energy-kWh", training_tracker.final_emissions_data.cpu_energy)
+    mlflow.log_metric("Total GPU Energy-kWh", training_tracker.final_emissions_data.gpu_energy)
+    mlflow.log_metric("Total RAM Energy-kWh", training_tracker.final_emissions_data.ram_energy)
 
     # Saving all graphs to mlflow along with model ------
     mlflow.log_figure(f1, "residuals_distribution.png")
